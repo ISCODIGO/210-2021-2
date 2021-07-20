@@ -3,26 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package semana6;
+package semana7.mouse;
 
-import semana6.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-
+import java.awt.event.MouseMotionListener;
+import java.util.Random;
 /**
  *
  * @author enrique
  */
-public class Registro extends javax.swing.JFrame implements MouseListener {
-
+public class Registro extends javax.swing.JFrame implements MouseMotionListener, MouseListener {
+    int X;
+    int Y;
+    int RED;
+    int GREEN;
+    int BLUE;
+    
     /**
      * Creates new form Registro
      */
     public Registro() {
         initComponents();
         
+        this.addMouseMotionListener(this);
         this.addMouseListener(this);
+        generarColor();
     }
     
     public void mostrar() {
@@ -46,23 +54,22 @@ public class Registro extends javax.swing.JFrame implements MouseListener {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Registro");
+        jLabel1.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addContainerGap(333, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(275, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 286, Short.MAX_VALUE)
+                .addComponent(jLabel1))
         );
 
         pack();
@@ -94,7 +101,6 @@ public class Registro extends javax.swing.JFrame implements MouseListener {
             java.util.logging.Logger.getLogger(Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -108,42 +114,47 @@ public class Registro extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 
+
     @Override
-    public void mouseClicked(MouseEvent e) {        
-        //System.out.println("Mouse clic");
-        int clics = e.getClickCount();
-        
-        if (clics >= 2) {
-            System.out.println("Doble clic");
-        }
-        
-        switch(e.getButton()) {
-            case MouseEvent.BUTTON1 -> System.out.println("Boton izq");
-            case MouseEvent.BUTTON2 -> System.out.println("Boton rueda");
-            case MouseEvent.BUTTON3 -> System.out.println("Boton der");
-        }
-        
-        System.out.printf("(x=%d, y=%d)%n", e.getX(), e.getY());
+    public void mouseDragged(MouseEvent e) {                
+        Graphics g = this.getGraphics();
+        g.setColor(new Color(RED, GREEN, BLUE));
+        g.drawLine(X, Y, e.getX(), e.getY());
+        jLabel1.setText(String.format("Dragged por (%d, %d)", e.getX(), e.getY()));
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        jLabel1.setText(String.format("Move por (%d, %d)", e.getX(), e.getY()));
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        //System.out.println("Mouse presionado");
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        //System.out.println("Mouse liberado");
+        this.X = e.getX();
+        this.Y = e.getY();  
+        generarColor();
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        //System.out.println("Entra");
-        System.out.printf("(x=%d, y=%d)%n", e.getX(), e.getY());
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        //System.out.println("Sale");
+    }
+    
+    public void generarColor() {
+        Random random = new Random();
+        RED = random.nextInt(256);
+        GREEN = random.nextInt(256);
+        BLUE = random.nextInt(256);
     }
 }

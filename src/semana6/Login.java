@@ -5,6 +5,7 @@
  */
 package semana6;
 
+import semana7.mouse.Registro;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -79,10 +80,11 @@ public class Login extends JFrame implements ActionListener {
         lblUsuario.setLabelFor(txtUsuario);
         lblPassword.setLabelFor(txtPassword);
 
+        // Estos 2 botones estan siendo escuchados por el JFrame
         btnEntrar.addActionListener(this);
         btnRegistrar.addActionListener(this);
         
-        // ActionListener funciona a nivel de componente
+        // ActionListener funciona a nivel de este componente
         txtUsuario.addActionListener((ActionEvent e) -> {
             txtPassword.setFocusable(true);
             txtPassword.requestFocus();

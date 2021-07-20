@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package semana6;
+package semana7.key;
 
-import semana6.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -14,7 +15,7 @@ import java.awt.event.MouseListener;
  *
  * @author enrique
  */
-public class Registro extends javax.swing.JFrame implements MouseListener {
+public class Registro extends javax.swing.JFrame implements MouseListener, KeyListener {
 
     /**
      * Creates new form Registro
@@ -23,6 +24,7 @@ public class Registro extends javax.swing.JFrame implements MouseListener {
         initComponents();
         
         this.addMouseListener(this);
+        this.addKeyListener(this);
     }
     
     public void mostrar() {
@@ -54,15 +56,15 @@ public class Registro extends javax.swing.JFrame implements MouseListener {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addContainerGap(333, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(275, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(275, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -93,6 +95,8 @@ public class Registro extends javax.swing.JFrame implements MouseListener {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -145,5 +149,32 @@ public class Registro extends javax.swing.JFrame implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         //System.out.println("Sale");
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+        System.out.println("Type");
+        System.out.println(e.getKeyChar());
+        System.out.println(e.getKeyCode());
+  
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("Press");
+        System.out.println(e.getKeyChar());
+        System.out.println(e.getKeyCode());
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println("Release");
+        
+        switch(e.getKeyCode()) {
+            case KeyEvent.VK_F2 -> jLabel1.setText("F2");
+            case KeyEvent.VK_F3 -> jLabel1.setText("F3");
+            case KeyEvent.VK_F4 -> jLabel1.setText("F4");
+        }
     }
 }
