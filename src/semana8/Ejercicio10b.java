@@ -23,8 +23,6 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -34,39 +32,51 @@ import javax.swing.JMenuItem;
  *
  * @author enrique
  */
-public class Ejercicio10b extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
+public class Ejercicio10b extends JFrame implements ActionListener {
 
-    // Atributos
-    private boolean bandera = false;
-    private int x1;
-    private int x2;
-    private int y1;
-    private int y2;
-    private Color colorLinea;
+
+
+    // Atributos constantes
     final int ANCHURA = 400;
     final int ALTURA = 400;
+
+    // Atributos
+    String[] nombreColores;
+    String[] nombreFormas;
+    Color colorLinea;
+    Canvas.EFormas forma;
+
     // Atributos componentes
     JMenuBar menu;
     JMenu menuArchivo;
+    JMenuItem menuItemLimpiar;
     JMenuItem menuSalir;
     JMenu menuColor;
     JMenuItem[] menuItemColores;
-    String[] nombreColores;
+    JMenu menuForma;
+    JMenuItem[] menuItemFormas;
+    Canvas canva;
 
     public Ejercicio10b() {
         super("Ejercicio 10: Dibujar lineas");
-
-        colorLinea = Color.BLACK;
 
         nombreColores = new String[]{
             "Rojo", "Verde", "Amarillo", "Azul", "Negro", "Blanco", "Cyan",
             "Magenta"
         };
 
+        nombreFormas = new String[]{
+            "Linea", "Ovalo", "Rectangulo"
+        };
+
         menu = new JMenuBar();
+        this.setJMenuBar(menu);
+
         menuArchivo = new JMenu("Archivo");
+        menu.add(menuArchivo);
+
         menuColor = new JMenu("Elegir color", false);
-        menuSalir = new JMenuItem("Salir");
+        menuArchivo.add(menuColor);
 
         menuItemColores = new JMenuItem[nombreColores.length];
         for (int i = 0; i < menuItemColores.length; i++) {
@@ -75,13 +85,30 @@ public class Ejercicio10b extends JFrame implements ActionListener, MouseListene
             menuColor.add(menuItemColores[i]);
         }
 
-        menuArchivo.add(menuColor);
-        menuArchivo.addSeparator();
-        menuArchivo.add(menuSalir);
-        menu.add(menuArchivo);
-        this.setJMenuBar(menu);
+        menuForma = new JMenu("Formas");
+        menuArchivo.add(menuForma);
 
-        this.addMouseListener(this);
+        menuItemFormas = new JMenuItem[nombreFormas.length];
+        for (int i = 0; i < menuItemFormas.length; i++) {
+            menuItemFormas[i] = new JMenuItem(nombreFormas[i]);
+            menuItemFormas[i].addActionListener(this);
+            menuForma.add(menuItemFormas[i]);
+        }
+
+        menuItemLimpiar = new JMenuItem("Limpiar pantalla");
+        menuItemLimpiar.addActionListener(this);
+        menuArchivo.add(menuItemLimpiar);
+
+        menuArchivo.addSeparator();
+
+        menuSalir = new JMenuItem("Salir");
+        menuSalir.addActionListener(this);
+        menuArchivo.add(menuSalir);
+
+        //  Para evitar algunos inconvenientes en el dibujado de graficos
+        canva = new Canvas();
+        this.add(canva);
+
     }
 
     public void dibujar() {
@@ -93,9 +120,6 @@ public class Ejercicio10b extends JFrame implements ActionListener, MouseListene
         });
     }
 
-    public void crearPuntoConMouse(Point p, MouseEvent e) {
-        p = new Point(e.getX(), e.getY());
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -106,66 +130,33 @@ public class Ejercicio10b extends JFrame implements ActionListener, MouseListene
             JMenuItem item = (JMenuItem) objeto;
             switch (item.getText()) {
                 case "Rojo" ->
-                    colorLinea = Color.RED;
+                    canva.color = Color.RED;
                 case "Verde" ->
-                    colorLinea = Color.GREEN;
+                    canva.color = Color.GREEN;
                 case "Amarillo" ->
-                    colorLinea = Color.YELLOW;
+                    canva.color = Color.YELLOW;
                 case "Azul" ->
-                    colorLinea = Color.BLUE;
+                    canva.color = Color.BLUE;
                 case "Negro" ->
-                    colorLinea = Color.BLACK;
+                    canva.color = Color.BLACK;
                 case "Blanco" ->
-                    colorLinea = Color.WHITE;
+                    canva.color = Color.WHITE;
                 case "Cyan" ->
-                    colorLinea = Color.CYAN;
+                    canva.color = Color.CYAN;
                 case "Magenta" ->
-                    colorLinea = Color.MAGENTA;
+                    canva.color = Color.MAGENTA;
+                case "Linea" ->
+                    canva.forma = Canvas.EFormas.LINEA;
+                case "Ovalo" ->
+                    canva.forma = Canvas.EFormas.OVALO;
+                case "Rectangulo" ->
+                    canva.forma = Canvas.EFormas.RECTANGULO;
+                case "Limpiar pantalla" ->
+                    canva.limpiar();
                 case "Salir" ->
                     System.exit(0);
             }
         }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if (bandera) {
-            x2 = e.getX();
-            y2 = e.getY();
-            Graphics g = this.getGraphics();
-            g.setColor(colorLinea);
-            g.drawLine(x1, y1, x2, y2);
-        } else {
-            x1 = e.getX();
-            y1 = e.getY();
-        }
-
-        System.out.println(bandera);
-        bandera = !bandera;
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
     }
 
     public static void main(String[] args) {
